@@ -13,12 +13,13 @@
       "settings": {
         "terminal.integrated.shell.linux": "/bin/bash",
         "files.associations": {
-          "*.keymap": "devicetree"
+          "*.keymap": "dts"
         }
       },
       "extensions": [
         "ms-vscode.makefile-tools",
         "ms-azuretools.vscode-docker",
+        "plorefice.devicetree",
         "spadin.zmk-tools",
         "anthropic.claude-code"
       ]
