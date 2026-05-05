@@ -7,7 +7,7 @@
     "source=lism-zmk-root-user,target=/root,type=volume",
     "source=${localWorkspaceFolder},target=/workspaces/zmk-config,type=bind"
   ],
-  "postCreateCommand": "bash .devcontainer/setup-west.sh",
+  "postCreateCommand": "bash .devcontainer/setup-west.sh && bash .devcontainer/setup-claude.sh",
   "customizations": {
     "vscode": {
       "settings": {
@@ -19,7 +19,8 @@
       "extensions": [
         "ms-vscode.makefile-tools",
         "ms-azuretools.vscode-docker",
-        "spadin.zmk-tools"
+        "spadin.zmk-tools",
+        "anthropic.claude-code"
       ]
     }
   }
