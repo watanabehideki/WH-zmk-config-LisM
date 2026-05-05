@@ -26,6 +26,7 @@ make all_studio_p   # ZMK Studio 版も含めて全ビルド（並列）
 make all            # 逐次ビルド（studio 除外）
 make all_studio     # 逐次ビルド（studio 含む）
 make single         # build.yaml のエントリから対話的に1つ選択してビルド
+make draw           # キーマップ可視化のみ実行 (keymap-drawer/*.svg を再生成)
 make clean          # firmware_builds/ を削除
 make setup-west     # _west ワークスペースを初期化＋ west update
 PARALLEL=4 make all_p   # 並列ジョブ数を上書き（既定は CPU コア数）
@@ -86,8 +87,12 @@ west build -s zmk/app -d <tmpdir> -b <board> [-S <snippet>] -- \
 ### キーマップと可視化
 
 - `config/lism.keymap` がキーマップ本体。`config/lism.json` は keymap-drawer 用のレイアウト定義。
-- `keymap-drawer/lism.svg` は `.github/workflows/drawer-keymap.yml`（caksoylar/keymap-drawer）が `config/*` 変更時に **自動生成・自動コミット**（コミットメッセージは `[Draw] ...`）。**SVG を手で編集しないこと。**
-- ローカルでドロー実行する仕組みは用意していない。
+- `keymap-drawer/lism.svg` および `lism.yaml` は **自動生成物**。手で編集しないこと。
+- 生成経路は 2 系統:
+  - **GitHub Actions**: `.github/workflows/drawer-keymap.yml`（caksoylar/keymap-drawer）が `config/*` 変更時に自動生成・自動コミット（コミットメッセージは `[Draw] ...`）。
+  - **ローカル**: `scripts/draw-keymap.sh` が `make` の全ビルドターゲット（`all*` / `single`）の末尾、または `make draw` で実行される。`config/*.keymap` を走査し、対応する `config/*.json` があれば `-j` で渡して draw する。
+- ローカル draw は `keymap-drawer` Python パッケージに依存。Dockerfile で同梱済みだが、未インストール環境でも `scripts/draw-keymap.sh` 内の自動 install フォールバックが効く（初回のみ apt + pip で 20 秒程度、以降は < 1 秒）。
+- 同じ `keymap-drawer/config.yaml` を CI とローカルが共有しているため、生成結果は一致する想定。
 
 ## CI
 
